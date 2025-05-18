@@ -4,7 +4,7 @@ Dotfiles usage in notebooks
 ## Installation
 
 ```bash
-!apt-get install vim tmux powerline zsh
+!apt-get install vim tmux powerline zsh stow
 !git clone https://github.com/gbraad/dotfiles.git ~/.dotfiles
 !~/.dotfiles/install.sh
 ```
@@ -21,8 +21,7 @@ or
 ### Source inside scriptblock
 ```zsh
 %%script zsh
-. ~/.zshrc.d/dotfiles.zsh
-dotfiles resource
+. ~/.dotfiles/source.sh
 country
 ```
 
@@ -38,7 +37,7 @@ def mysh(line, cell=None):
     command = line
     if cell:
         command += '\n' + cell
-    get_ipython().system(f"zsh -c 'source ~/.zshrc; {command}'")
+    get_ipython().system(f"zsh -i -c '. ~/.dotfiles/source.sh; {command}'")
 ```
 
 #### Line magic
