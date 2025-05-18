@@ -40,5 +40,38 @@ def dotfiles(line):
 
 ```zsh
 %dotfiles country
-"The Netherlands"
 ```
+
+    "The Netherlands"
+
+
+### Cell magic
+
+You can also use the following for a cell:
+```python
+from IPython.core.magic import register_cell_magic
+
+@register_cell_magic
+def dotfiles(line, cell=None):
+    import subprocess
+    command = line
+    if cell:
+        command += '\n' + cell
+    result = subprocess.run(
+        ["zsh", "-i", "-c", f". ~/.dotfiles/source.sh; {command}"], 
+        capture_output=True, text=True
+    )
+    print(result.stdout)
+    if result.stderr:
+        print(result.stderr)
+```
+
+```zsh
+%%dotfiles
+country
+```
+
+    "The Netherlands"
+
+> [!NOTE}
+> You can use `register_line_cell_magic` instead. This will however not print the output in color.
