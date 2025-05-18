@@ -39,6 +39,6 @@ def dotfiles(line):
 ```
 
 ```zsh
-!dotfiles country
+%dotfiles country
 "The Netherlands"
 ```
