@@ -27,44 +27,28 @@ country
 ```
 
 
-### Line magic
+### Cell/Line magic
 
 In a code cell execute:
 ```python
-from IPython.core.magic import register_line_magic
+from IPython.core.magic import register_line_cell_magic
 
-@register_line_magic
-def dotfiles(line):
-    return get_ipython().system(f"zsh -i -c '. ~/.dotfiles/source.sh; {line}'")
+@register_line_cell_magic
+def mysh(line, cell=None):
+    command = line
+    if cell:
+        command += '\n' + cell
+    get_ipython().system(f"zsh -c 'source ~/.zshrc; {command}'")
 ```
 
+#### Line magic
 ```zsh
 %dotfiles country
 ```
 
     "The Netherlands"
 
-
-### Cell magic
-
-You can also use the following for a cell:
-```python
-from IPython.core.magic import register_cell_magic
-
-@register_cell_magic
-def dotfiles(line, cell=None):
-    import subprocess
-    command = line
-    if cell:
-        command += '\n' + cell
-    result = subprocess.run(
-        ["zsh", "-i", "-c", f". ~/.dotfiles/source.sh; {command}"], 
-        capture_output=True, text=True
-    )
-    print(result.stdout)
-    if result.stderr:
-        print(result.stderr)
-```
+#### Cell magic
 
 ```zsh
 %%dotfiles
@@ -72,6 +56,3 @@ country
 ```
 
     "The Netherlands"
-
-> [!NOTE}
-> You can use `register_line_cell_magic` instead. This will however not print the output in color.
