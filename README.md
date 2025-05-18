@@ -27,7 +27,7 @@ country
 ```
 
 
-### Cell/Line magic
+### Line amd Cell magic
 
 In a code cell execute:
 ```python
@@ -56,3 +56,24 @@ country
 ```
 
     "The Netherlands"
+
+### Extension
+
+This is only available if the `.dotfiles` has also stwoed `ipython`. This can be done as follows
+```bash
+%%script zsh
+cd ~/.dotfiles
+stow ipython
+```
+
+After this you can use the following in your notebook to load the extension:
+```python
+$load_ext dotfiles
+```
+
+If for some reason you get a `ModuleNotFoundError: No module named 'dotfiles'`, it might be that the extensions is not part of the `sys.path`. This can be fixed with:
+
+```python
+import sys, os
+sys.path.append(os.path.expanduser("~/.ipython/extensions"))
+```
