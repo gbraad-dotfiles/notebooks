@@ -1,0 +1,21 @@
+{
+    "name": "Fedora dotfiles environment",
+    "image": "ghcr.io/gbraad-dotfiles/fedora:latest",
+
+    "runArgs": [ "--cap-add=NET_ADMIN", "--cap-add=NET_RAW", "--device=/dev/net/tun", "--device=/dev/fuse"],
+    "overrideCommand": false,
+    "privileged": true,
+    "remoteUser": "gbraad",
+
+    "postCreateCommand": "sudo dnf install -y python3-pip python3-ipykernel",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.Theme-TomorrowKit",
+		        "gbraad.dotfiles-checker",
+                "gbraad.extensionpack"
+            ]
+        }
+    }
+}
