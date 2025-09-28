@@ -76,18 +76,11 @@ jobs:
             cd ~/.dotfiles
             stow ipython
 
-      # separate checkout and compile due to docker permissions
-      - name: Run notebook conversion
+      - name: Execute notebook
         uses: gbraad-actions/zsh-action@main
         with:
           run: |
-            jupyter nbconvert --to script ${{ inputs.notebook }} --stdout > /tmp/out.py
-
-      - name: Execute notebook script
-        uses: gbraad-actions/zsh-action@main
-        with:
-          run: |
-            ipython /tmp/out.py
+            jupyter nbconvert --execute ${{ inputs.notebook }}
 
       # ideally only upload 'out' after flatten
       - name: Upload Artifact - Uploads as Uploads
@@ -98,4 +91,5 @@ jobs:
           path: ${{ github.workspace }}/Uploads/
           retention-days: 1
           include-hidden-files: true
+
 
