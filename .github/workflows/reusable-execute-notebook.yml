@@ -66,8 +66,8 @@ jobs:
       - name: Install jupyter notebook
         uses: gbraad-dotfiles/app-action@main
         with:
-          app: jupyter-notebook
-          arch: install
+          appname: jupyter-notebook
+          action: install
 
       - name: Run stow ipython
         uses: gbraad-actions/zsh-action@main
