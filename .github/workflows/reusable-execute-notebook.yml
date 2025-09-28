@@ -80,7 +80,7 @@ jobs:
         uses: gbraad-actions/zsh-action@main
         with:
           run: |
-            jupyter nbconvert --execute ${{ inputs.notebook }}
+            ipython -c "%run ${{ inputs.notebook }}"
 
       # ideally only upload 'out' after flatten
       - name: Upload Artifact - Uploads as Uploads
@@ -91,5 +91,6 @@ jobs:
           path: ${{ github.workspace }}/Uploads/
           retention-days: 1
           include-hidden-files: true
+
 
 
