@@ -1,0 +1,100 @@
+name: test-compile-project
+run-name: Test action-command with project builds
+
+on:
+  workflow_dispatch:
+    inputs:
+      runs-on:
+        description: "Target runner"
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      arch:
+        description: "Target architecture (e.g., arm64, amd64)"
+        required: true
+        type: string
+        default: "amd64"
+      notebook:
+        description: "Notebook to execute"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      runs-on:
+        description: "Target runner"
+        required: true
+        type: string
+        default: "ubuntu-latest"
+      arch:
+        description: "Target architecture (e.g., arm64, amd64)"
+        required: true
+        type: string
+        default: "amd64"
+      notebook:
+        description: "Notebook to execute"
+        required: true
+        type: string
+
+jobs:
+  test-compile-project:
+    runs-on: ${{ inputs.runs-on }}${{ inputs.arch == 'arm64' && '-arm' || '' }}
+
+    steps:
+      - name: Enable linger and create user session (workaround)
+        uses: gbraad-actions/blacksmith-user-session@main
+
+      - name: Allow unprivileged userns (workaround)
+        uses: gbraad-actions/warpbuild-unprivileged-userns@main
+
+      - name: Checkout source repository
+        uses: actions/checkout@v2
+
+      # This folder will be used with the container
+      - name: Create userdirs
+        run: |
+          cd ${{ github.workspace }}
+          mkdir -p Projects
+          ln -s ${{ github.workspace }}/Projects  ${HOME}/Projects
+          mkdir -p Uploads
+          ln -s ${{ github.workspace }}/Uploads  ${HOME}/Uploads
+
+      - name: Setup environment
+        uses: gbraad-dotfiles/install-action@main
+        with:
+          upstream: true
+
+      - name: Install jupyter notebook
+        uses: gbraad-dotfiles/app-action@main
+        with:
+          app: jupyter-notebook
+          arch: install
+
+      - name: Run stow ipython
+        uses: gbraad-actions/zsh-action@main
+        with:
+          run: |
+            cd ~/.dotfiles
+            stow ipython
+
+      # separate checkout and compile due to docker permissions
+      - name: Run notebook conversion
+        uses: gbraad-actions/zsh-action@main
+        with:
+          run: |
+            jupyter nbconvert --to script ${{ inputs.notebook }} --stdout > /tmp/out.py
+
+      - name: Execute notebook script
+        uses: gbraad-actions/zsh-action@main
+        with:
+          run: |
+            ipython /tmp/out.py
+
+      # ideally only upload 'out' after flatten
+      - name: Upload Artifact - Uploads as Uploads
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: uploads
+          path: ${{ github.workspace }}/Uploads/
+          retention-days: 1
+          include-hidden-files: true

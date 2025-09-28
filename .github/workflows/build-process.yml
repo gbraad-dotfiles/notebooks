@@ -1,0 +1,19 @@
+name: Notebook tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+  pull_request: {}
+
+jobs:
+
+  run-compile-crc:
+    name: Compile crc
+    uses: ./.github/workflows/reusable-execute-notebook.yml
+    with:
+      runs-on: "ubuntu-latest"
+      arch: amd64
+      notebook: "examples/compiling-crc.ipynb"
+    secrets: inherit
