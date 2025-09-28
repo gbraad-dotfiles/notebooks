@@ -1,5 +1,5 @@
-name: test-compile-project
-run-name: Test action-command with project builds
+name: test-execute-notebook
+run-name: Test notebook execution
 
 on:
   workflow_dispatch:
@@ -36,7 +36,7 @@ on:
         type: string
 
 jobs:
-  test-compile-project:
+  test-execute-notebook:
     runs-on: ${{ inputs.runs-on }}${{ inputs.arch == 'arm64' && '-arm' || '' }}
 
     steps:
@@ -98,3 +98,4 @@ jobs:
           path: ${{ github.workspace }}/Uploads/
           retention-days: 1
           include-hidden-files: true
+
