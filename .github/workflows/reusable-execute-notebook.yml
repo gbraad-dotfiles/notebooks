@@ -69,6 +69,12 @@ jobs:
           appname: jupyter-notebook
           action: install
 
+      - name: Install jupytext
+        uses: gbraad-dotfiles/app-action@main
+        with:
+          appname: jupytext
+          action: install
+
       - name: Run stow ipython
         uses: gbraad-actions/zsh-action@main
         with:
@@ -77,10 +83,10 @@ jobs:
             stow ipython
 
       - name: Execute notebook
-        uses: gbraad-actions/zsh-action@main
+        uses: gbraad-dotfiles/notebook-action@main
         with:
-          run: |
-            ipython -c "%run ${{ inputs.notebook }}"
+          notebook: ${{ inputs.notebook }}
+          command: execute
 
       # ideally only upload 'out' after flatten
       - name: Upload Artifact - Uploads as Uploads

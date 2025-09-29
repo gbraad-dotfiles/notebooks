@@ -9,6 +9,15 @@ on:
 
 jobs:
 
+  run-template:
+    name: Template
+    uses: ./.github/workflows/reusable-execute-notebook.yml
+    with:
+      runs-on: "ubuntu-latest"
+      arch: amd64
+      notebook: "template.ipynb"
+    secrets: inherit
+
   run-compile-crc:
     name: Compile crc
     uses: ./.github/workflows/reusable-execute-notebook.yml
