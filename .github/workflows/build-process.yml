@@ -15,6 +15,7 @@ jobs:
     with:
       runs-on: "ubuntu-latest"
       arch: amd64
+      out-name: "template"
       notebook: "template.ipynb"
     secrets: inherit
 
@@ -24,5 +25,6 @@ jobs:
     with:
       runs-on: "ubuntu-latest"
       arch: amd64
+      out-name: "crc"
       notebook: "projects/crc.ipynb"
     secrets: inherit
