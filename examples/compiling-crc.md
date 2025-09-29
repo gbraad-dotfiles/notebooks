@@ -24,8 +24,9 @@ This is just an insightful gist that shows how I automate some tasks.
 this step prepares the host machine with `podman` and my dotfiles. The dotfiles contains several helper functions that simplify starting the containers.
 
 ```bash
-apt-get install -y podman
-curl -fsSL https://dotfiles.gbraad.nl/install.sh | sh
+if [ ! -d "$HOME/.dotfiles" ]; then
+  curl -fsSL https://dotfiles.gbraad.nl/install.sh | sh
+fi
 ```
 
 To simplify executing cells with these dotfiles, we can load an extensin that sources the helper functions.
