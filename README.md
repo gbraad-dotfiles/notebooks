@@ -19,7 +19,7 @@ or
 ## Usage
 
 ### Source inside scriptblock
-```zsh
+```python
 %%script zsh
 . ~/.dotfiles/source.sh
 country
@@ -41,16 +41,16 @@ def mysh(line, cell=None):
 ```
 
 #### Line magic
-```zsh
-%dotfiles country
+```python
+%dot country
 ```
 
     "The Netherlands"
 
 #### Cell magic
 
-```zsh
-%%dotfiles
+```python
+%%dotscript
 country
 ```
 
@@ -58,7 +58,7 @@ country
 
 ### Extension
 
-This is only available if the `.dotfiles` has also stwoed `ipython`. This can be done as follows
+This is only available if the `.dotfiles` has also stowed `ipython`. This can be done as follows
 ```bash
 %%script zsh
 cd ~/.dotfiles
@@ -68,6 +68,16 @@ stow ipython
 After this you can use the following in your notebook to load the extension:
 ```python
 $load_ext dotfiles
+```
+
+This enables the tools `devenv`, `machine`, `app`, `action`, `notebook`, etc which can be used as:
+
+```python
+%devenv gofedora noinit
+```
+
+```python
+%app weather apeldoorn
 ```
 
 If for some reason you get a `ModuleNotFoundError: No module named 'dotfiles'`, it might be that the extensions is not part of the `sys.path`. This can be fixed with:
