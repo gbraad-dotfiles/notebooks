@@ -15,12 +15,6 @@ jupyter:
 
 # Template
 
-```python
-import sys, os
-sys.path.append(os.path.expanduser("~/.dotfiles/ipython/.ipython/extensions"))
-ip = get_ipython()
-ip.extension_manager.load_extension("dotfiles")
-```
 
 ### Test function
 
